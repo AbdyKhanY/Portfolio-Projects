@@ -43,6 +43,7 @@ The dataset contains **2,240 rows** and **28 columns**.
 ## Repository Files
 - `marketing_analysis.sql` → Main SQL analysis queries
 - `README.md` → Project overview and documentation
+- `marketing_data.csv` → Project Dataset
 
 ---
 
