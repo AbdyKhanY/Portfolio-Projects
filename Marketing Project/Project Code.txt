@@ -1,278 +1,289 @@
---Reading the data
+/*
+Project: Marketing Customer Segmentation Analysis
+Author: Abdikhani
+Tool: Google BigQuery
+Dataset: marketing
+Goal:
+Analyze customer demographics, income, spending behavior,
+purchase patterns, and campaign response to uncover
+actionable business insights.
+*/
+
+-- =========================================================
+-- 1. DATA INSPECTION
+-- =========================================================
 
 SELECT *
-FROM `vibrant-outpost-381409.Markettig_data.marketting`
+FROM `vibrant-outpost-381409.Markettig_data.marketting`;
 
---To Describe the column data types(3 strings , 1 date the rest are integers) 
+-- Number of rows
+SELECT COUNT(*) AS total_rows
+FROM `vibrant-outpost-381409.Markettig_data.marketting`;
 
+-- Number of columns
+SELECT COUNT(*) AS total_columns
+FROM `vibrant-outpost-381409.Markettig_data.INFORMATION_SCHEMA.COLUMNS`
+WHERE table_name = 'marketting';
+
+-- Column names and data types
 SELECT column_name, data_type
 FROM `vibrant-outpost-381409.Markettig_data.INFORMATION_SCHEMA.COLUMNS`
 WHERE table_name = 'marketting';
 
---Counting number of  rows in the data = 2240
-SELECT
-  COUNT(*) AS TotalRows,
-FROM
-  `vibrant-outpost-381409.Markettig_data.marketting`;
 
----Counting number of columns in the data = 28
-SELECT
-  COUNT(*) AS TotalColumns
-FROM
-  `vibrant-outpost-381409.Markettig_data.INFORMATION_SCHEMA.COLUMNS`
-WHERE
-  table_name = 'marketting';
+-- =========================================================
+-- 2. DATA QUALITY CHECKS
+-- =========================================================
 
-
---To check the null values(only income has 24 null values)
 SELECT 
-  COUNT(*) AS TotalRows,
-  COUNTIF(Year_Birth IS NULL) AS NullsInYearBirth,
-  COUNTIF(Education IS NULL) AS NullsInEducation,
-  COUNTIF(Marital_Status IS NULL) AS NullsInMaritalStatus,
-  COUNTIF(_Income_ IS NULL) AS NullsInIncome,
-  COUNTIF(Kidhome IS NULL) AS NullsInKidhome,
-  COUNTIF(Teenhome IS NULL) AS NullsInTeenhome,
-  COUNTIF(Dt_Customer IS NULL) AS NullsInDtCustomer,
-  COUNTIF(Recency IS NULL) AS NullsInRecency,
-  COUNTIF(MntWines IS NULL) AS NullsInMntWines,
-  COUNTIF(MntFruits IS NULL) AS NullsInMntFruits,
-  COUNTIF(MntMeatProducts IS NULL) AS NullsInMntMeatProducts,
-  COUNTIF(MntFishProducts IS NULL) AS NullsInMntFishProducts,
-  COUNTIF(MntSweetProducts IS NULL) AS NullsInMntSweetProducts,
-  COUNTIF(MntGoldProds IS NULL) AS NullsInMntGoldProds,
-  COUNTIF(NumDealsPurchases IS NULL) AS NullsInNumDealsPurchases,
-  COUNTIF(NumWebPurchases IS NULL) AS NullsInNumWebPurchases,
-  COUNTIF(NumCatalogPurchases IS NULL) AS NullsInNumCatalogPurchases,
-  COUNTIF(NumStorePurchases IS NULL) AS NullsInNumStorePurchases,
-  COUNTIF(NumWebVisitsMonth IS NULL) AS NullsInNumWebVisitsMonth,
-  COUNTIF(Response IS NULL) AS NullsInResponse,
-  COUNTIF(Complain IS NULL) AS NullsInComplain,
-  COUNTIF(AcceptedCmp1 IS NULL) AS NullsInAcceptedCmp1,
-  COUNTIF(AcceptedCmp2 IS NULL) AS NullsInAcceptedCmp2,
-  COUNTIF(AcceptedCmp3 IS NULL) AS NullsInAcceptedCmp3,
-  COUNTIF(AcceptedCmp4 IS NULL) AS NullsInAcceptedCmp4,
-  COUNTIF(AcceptedCmp5 IS NULL) AS NullsInAcceptedCmp5
+  COUNT(*) AS total_rows,
+  COUNTIF(Year_Birth IS NULL) AS nulls_year_birth,
+  COUNTIF(Education IS NULL) AS nulls_education,
+  COUNTIF(Marital_Status IS NULL) AS nulls_marital_status,
+  COUNTIF(_Income_ IS NULL) AS nulls_income,
+  COUNTIF(Kidhome IS NULL) AS nulls_kidhome,
+  COUNTIF(Teenhome IS NULL) AS nulls_teenhome,
+  COUNTIF(Dt_Customer IS NULL) AS nulls_dt_customer,
+  COUNTIF(Recency IS NULL) AS nulls_recency,
+  COUNTIF(MntWines IS NULL) AS nulls_mnt_wines,
+  COUNTIF(MntFruits IS NULL) AS nulls_mnt_fruits,
+  COUNTIF(MntMeatProducts IS NULL) AS nulls_mnt_meat_products,
+  COUNTIF(MntFishProducts IS NULL) AS nulls_mnt_fish_products,
+  COUNTIF(MntSweetProducts IS NULL) AS nulls_mnt_sweet_products,
+  COUNTIF(MntGoldProds IS NULL) AS nulls_mnt_gold_prods,
+  COUNTIF(NumDealsPurchases IS NULL) AS nulls_num_deals_purchases,
+  COUNTIF(NumWebPurchases IS NULL) AS nulls_num_web_purchases,
+  COUNTIF(NumCatalogPurchases IS NULL) AS nulls_num_catalog_purchases,
+  COUNTIF(NumStorePurchases IS NULL) AS nulls_num_store_purchases,
+  COUNTIF(NumWebVisitsMonth IS NULL) AS nulls_num_web_visits_month,
+  COUNTIF(Response IS NULL) AS nulls_response,
+  COUNTIF(Complain IS NULL) AS nulls_complain,
+  COUNTIF(AcceptedCmp1 IS NULL) AS nulls_accepted_cmp1,
+  COUNTIF(AcceptedCmp2 IS NULL) AS nulls_accepted_cmp2,
+  COUNTIF(AcceptedCmp3 IS NULL) AS nulls_accepted_cmp3,
+  COUNTIF(AcceptedCmp4 IS NULL) AS nulls_accepted_cmp4,
+  COUNTIF(AcceptedCmp5 IS NULL) AS nulls_accepted_cmp5
 FROM `vibrant-outpost-381409.Markettig_data.marketting`;
 
 
+-- =========================================================
+-- 3. CUSTOMER SEGMENTATION BASE TABLE
+-- =========================================================
 
---Relationship between Age group and their expenditure on certain products
---This expression calculates the age group for each customer by subtracting their birth year from the current year, rounding down to the nearest lower decade, and presenting it as a range (e.g., "30-39" for customers in their thirties). 
+WITH customer_base AS (
+  SELECT
+    *,
+    EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth AS Age,
+    CONCAT(
+      FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10,
+      '-',
+      FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10 + 9
+    ) AS Age_Group,
+    CONCAT(
+      '$',
+      FLOOR((_Income_ - 1) / 20000) * 20000 + 1,
+      ' - $',
+      FLOOR((_Income_ - 1) / 20000) * 20000 + 20000
+    ) AS Income_Group
+  FROM `vibrant-outpost-381409.Markettig_data.marketting`
+)
+
+-- =========================================================
+-- 4. AGE GROUP VS PRODUCT SPENDING
+-- =========================================================
 
 SELECT
   Age_Group,
-  SUM(MntWines) AS Total_Wine_Spending,
-  SUM(MntFruits) AS Total_Fruit_Spending,
-  SUM(MntMeatProducts) AS Total_Meat_Spending,
-  SUM(MntFishProducts) AS Total_Fish_Spending,
-  SUM(MntSweetProducts) AS Total_Sweet_Spending,
-  SUM(MntGoldProds) AS Total_Gold_Spending
-FROM (
+  SUM(MntWines) AS total_wine_spending,
+  SUM(MntFruits) AS total_fruit_spending,
+  SUM(MntMeatProducts) AS total_meat_spending,
+  SUM(MntFishProducts) AS total_fish_spending,
+  SUM(MntSweetProducts) AS total_sweet_spending,
+  SUM(MntGoldProds) AS total_gold_spending
+FROM customer_base
+GROUP BY Age_Group
+ORDER BY Age_Group;
+
+
+-- =========================================================
+-- 5. AGE GROUP VS INCOME & PURCHASE CHANNELS
+-- =========================================================
+
+WITH customer_base AS (
   SELECT
-    CONCAT(FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10, '-', FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10 + 9) AS Age_Group,
-    MntWines,
-    MntFruits,
-    MntMeatProducts,
-    MntFishProducts,
-    MntSweetProducts,
-    MntGoldProds
-  FROM
-    `vibrant-outpost-381409.Markettig_data.marketting`
+    *,
+    EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth AS Age,
+    CONCAT(
+      FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10,
+      '-',
+      FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10 + 9
+    ) AS Age_Group
+  FROM `vibrant-outpost-381409.Markettig_data.marketting`
 )
-GROUP BY
-  Age_Group
-ORDER BY
-  CASE
-    WHEN Age_Group = '130-139' THEN 1
-    WHEN Age_Group = '120-129' THEN 2
-    WHEN Age_Group = '80-89'   THEN 3
-    WHEN Age_Group = '70-79'   THEN 4
-    WHEN Age_Group = '60-69'   THEN 5
-    WHEN Age_Group = '50-59'   THEN 6
-    WHEN Age_Group = '40-49'   THEN 7
-    WHEN Age_Group = '30-39'   THEN 8
-    WHEN Age_Group = '20-29'   THEN 9
 
-  END;
-
-
----Relationship between Age-group, Income and number of purchases made.
-
--- Query to calculate total income and total purchases by age group
-
--- Select the columns for analysis: Age_Group, Total Income, Total Deals Purchases, Total Web Purchases, Total Catalog Purchases, Total Store Purchases
 SELECT
   Age_Group,
-  SUM(_income_) AS Total_Income,
-  SUM(NumDealsPurchases) AS Total_Deals_Purchases,
-  SUM(NumWebPurchases) AS Total_Web_Purchases,
-  SUM(NumCatalogPurchases) AS Total_Catalog_Purchases,
-  SUM(NumStorePurchases) AS Total_Store_Purchases
-FROM (
-  -- Subquery to calculate age group and select relevant columns from the table
+  SUM(_Income_) AS total_income,
+  SUM(NumDealsPurchases) AS total_deals_purchases,
+  SUM(NumWebPurchases) AS total_web_purchases,
+  SUM(NumCatalogPurchases) AS total_catalog_purchases,
+  SUM(NumStorePurchases) AS total_store_purchases
+FROM customer_base
+GROUP BY Age_Group
+ORDER BY Age_Group;
+
+
+-- =========================================================
+-- 6. AGE GROUP VS CAMPAIGN RESPONSE & COMPLAINTS
+-- =========================================================
+
+WITH customer_base AS (
   SELECT
-    CONCAT(FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10, '-', FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10 + 9) AS Age_Group,
-    _income_,
-    NumDealsPurchases,
-    NumWebPurchases,
-    NumCatalogPurchases,
-    NumStorePurchases
-  FROM
-    `vibrant-outpost-381409.Markettig_data.marketting`
+    *,
+    CONCAT(
+      FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10,
+      '-',
+      FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10 + 9
+    ) AS Age_Group
+  FROM `vibrant-outpost-381409.Markettig_data.marketting`
 )
-GROUP BY
-  Age_Group
-ORDER BY
-  CASE
-    WHEN Age_Group = '130-139' THEN 1
-    WHEN Age_Group = '120-129' THEN 2
-    WHEN Age_Group = '80-89' THEN 3
-    WHEN Age_Group = '70-79' THEN 4
-    WHEN Age_Group = '60-69' THEN 5
-    WHEN Age_Group = '50-59' THEN 6
-    WHEN Age_Group = '40-49' THEN 7
-    WHEN Age_Group = '30-39' THEN 8
-    WHEN Age_Group = '20-29' THEN 9
-  END;
-
-
-
---Relationship Between Age group, Campaign Acceptance, Response and Complains.
 
 SELECT
-  Age_Group, -- Age group calculated based on year of birth
-  SUM(AcceptedCmp3) AS Total_AcceptedCmp3, -- Total number of customers who accepted the offer in the 3rd campaign
-  SUM(AcceptedCmp4) AS Total_AcceptedCmp4, -- Total number of customers who accepted the offer in the 4th campaign
-  SUM(AcceptedCmp5) AS Total_AcceptedCmp5, -- Total number of customers who accepted the offer in the 5th campaign
-  SUM(AcceptedCmp1) AS Total_AcceptedCmp1, -- Total number of customers who accepted the offer in the 1st campaign
-  SUM(AcceptedCmp2) AS Total_AcceptedCmp2, -- Total number of customers who accepted the offer in the 2nd campaign
-  SUM(Response) AS Total_Response, -- Total number of customers who responded to the last campaign
-  SUM(Complain) AS Total_Complain -- Total number of customers who complained in the last 2 years
-FROM (
+  Age_Group,
+  SUM(AcceptedCmp1) AS total_accepted_cmp1,
+  SUM(AcceptedCmp2) AS total_accepted_cmp2,
+  SUM(AcceptedCmp3) AS total_accepted_cmp3,
+  SUM(AcceptedCmp4) AS total_accepted_cmp4,
+  SUM(AcceptedCmp5) AS total_accepted_cmp5,
+  SUM(Response) AS total_response,
+  SUM(Complain) AS total_complain
+FROM customer_base
+GROUP BY Age_Group
+ORDER BY Age_Group;
+
+
+-- =========================================================
+-- 7. INCOME GROUP VS SPENDING, PURCHASES & CAMPAIGNS
+-- =========================================================
+
+WITH customer_base AS (
   SELECT
-    CONCAT(FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10, '-', FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10 + 9) AS Age_Group, -- Calculate age group based on year of birth
-    AcceptedCmp3, -- 1 if customer accepted the offer in the 3rd campaign, 0 otherwise
-    AcceptedCmp4, -- 1 if customer accepted the offer in the 4th campaign, 0 otherwise
-    AcceptedCmp5, -- 1 if customer accepted the offer in the 5th campaign, 0 otherwise
-    AcceptedCmp1, -- 1 if customer accepted the offer in the 1st campaign, 0 otherwise
-    AcceptedCmp2, -- 1 if customer accepted the offer in the 2nd campaign, 0 otherwise
-    Response, -- 1 if customer accepted the offer in the last campaign, 0 otherwise
-    Complain -- 1 if customer complained in the last 2 years, 0 otherwise
-  FROM
-    `vibrant-outpost-381409.Markettig_data.marketting`
+    *,
+    CONCAT(
+      '$',
+      FLOOR((_Income_ - 1) / 20000) * 20000 + 1,
+      ' - $',
+      FLOOR((_Income_ - 1) / 20000) * 20000 + 20000
+    ) AS Income_Group
+  FROM `vibrant-outpost-381409.Markettig_data.marketting`
+  WHERE _Income_ IS NOT NULL
 )
-GROUP BY
-  Age_Group -- Group by age group
-ORDER BY
-  CASE
-    WHEN Age_Group = '130-139' THEN 1 -- Sort age group '130-139' first
-    WHEN Age_Group = '120-129' THEN 2 -- Sort age group '120-129' second
-    WHEN Age_Group = '80-89' THEN 3 -- Sort age group '80-89' third
-    WHEN Age_Group = '70-79' THEN 4 -- Sort age group '70-79' fourth
-    WHEN Age_Group = '60-69' THEN 5 -- Sort age group '60-69' fifth
-    WHEN Age_Group = '50-59' THEN 6 -- Sort age group '50-59' sixth
-    WHEN Age_Group = '40-49' THEN 7 -- Sort age group '40-49' seventh
-    WHEN Age_Group = '30-39' THEN 8 -- Sort age group '30-39' eighth
-    WHEN Age_Group = '20-29' THEN 9 -- Sort age group '20-29' ninth
-  END;
-
-
-
---Relationship Between Income Group vs products, purchases, campaigns , responses and complains
 
 SELECT
-  CONCAT('$', FLOOR((_income_ - 1) / 20000) * 20000 + 1, ' - $', FLOOR((_income_ - 1) / 20000) * 20000 + 20000) AS Income_Group, -- Income Group range
-  SUM(MntWines) AS Total_MntWines, -- Total amount spent on wines
-  SUM(MntFruits) AS Total_MntFruits, -- Total amount spent on fruits
-  SUM(MntMeatProducts) AS Total_MntMeatProducts, -- Total amount spent on meat products
-  SUM(MntFishProducts) AS Total_MntFishProducts, -- Total amount spent on fish products
-  SUM(MntSweetProducts) AS Total_MntSweetProducts, -- Total amount spent on sweets
-  SUM(MntGoldProds) AS Total_MntGoldProds, -- Total amount spent on gold products
-  SUM(NumDealsPurchases) AS Total_Deals_Purchases, -- Total number of purchases made with a discount
-  SUM(NumWebPurchases) AS Total_Web_Purchases, -- Total number of purchases made through the website
-  SUM(NumCatalogPurchases) AS Total_Catalog_Purchases, -- Total number of purchases made using a catalog
-  SUM(NumStorePurchases) AS Total_Store_Purchases, -- Total number of purchases made directly in stores
-  SUM(AcceptedCmp3) AS Total_AcceptedCmp3, -- Total number of customers who accepted the offer in the 3rd campaign
-  SUM(AcceptedCmp4) AS Total_AcceptedCmp4, -- Total number of customers who accepted the offer in the 4th campaign
-  SUM(AcceptedCmp5) AS Total_AcceptedCmp5, -- Total number of customers who accepted the offer in the 5th campaign
-  SUM(AcceptedCmp1) AS Total_AcceptedCmp1, -- Total number of customers who accepted the offer in the 1st campaign
-  SUM(AcceptedCmp2) AS Total_AcceptedCmp2, -- Total number of customers who accepted the offer in the 2nd campaign
-  SUM(Response) AS Total_Response, -- Total number of customers who responded to the last campaign
-  SUM(Complain) AS Total_Complain -- Total number of customers who complained in the last 2 years
-FROM
-  `vibrant-outpost-381409.Markettig_data.marketting`
-WHERE
-  _income_ IS NOT NULL -- Exclude rows with null incomes
-GROUP BY
-  Income_Group
-ORDER BY
-  MIN(_income_);
+  Income_Group,
+  SUM(MntWines) AS total_mnt_wines,
+  SUM(MntFruits) AS total_mnt_fruits,
+  SUM(MntMeatProducts) AS total_mnt_meat_products,
+  SUM(MntFishProducts) AS total_mnt_fish_products,
+  SUM(MntSweetProducts) AS total_mnt_sweet_products,
+  SUM(MntGoldProds) AS total_mnt_gold_prods,
+  SUM(NumDealsPurchases) AS total_deals_purchases,
+  SUM(NumWebPurchases) AS total_web_purchases,
+  SUM(NumCatalogPurchases) AS total_catalog_purchases,
+  SUM(NumStorePurchases) AS total_store_purchases,
+  SUM(AcceptedCmp1) AS total_accepted_cmp1,
+  SUM(AcceptedCmp2) AS total_accepted_cmp2,
+  SUM(AcceptedCmp3) AS total_accepted_cmp3,
+  SUM(AcceptedCmp4) AS total_accepted_cmp4,
+  SUM(AcceptedCmp5) AS total_accepted_cmp5,
+  SUM(Response) AS total_response,
+  SUM(Complain) AS total_complain
+FROM customer_base
+GROUP BY Income_Group
+ORDER BY Income_Group;
 
 
-  --Relationship between marital status and Income_Group vs Sum of products, purchases , campaigns, responses and total complains.
+-- =========================================================
+-- 8. MARITAL STATUS + INCOME GROUP ANALYSIS
+-- =========================================================
 
+WITH customer_base AS (
   SELECT
-  Marital_Status, -- Marital status of customers
-  CONCAT('$', FLOOR((_income_ - 1) / 20000) * 20000 + 1, ' - $', FLOOR((_income_ - 1) / 20000) * 20000 + 20000) AS Income_Group, -- Income Group range
-  SUM(MntWines) AS Total_MntWines, -- Total amount spent on wines
-  SUM(MntFruits) AS Total_MntFruits, -- Total amount spent on fruits
-  SUM(MntMeatProducts) AS Total_MntMeatProducts, -- Total amount spent on meat products
-  SUM(MntFishProducts) AS Total_MntFishProducts, -- Total amount spent on fish products
-  SUM(MntSweetProducts) AS Total_MntSweetProducts, -- Total amount spent on sweets
-  SUM(MntGoldProds) AS Total_MntGoldProds, -- Total amount spent on gold products
-  SUM(NumDealsPurchases) AS Total_Deals_Purchases, -- Total number of purchases made with a discount
-  SUM(NumWebPurchases) AS Total_Web_Purchases, -- Total number of purchases made through the website
-  SUM(NumCatalogPurchases) AS Total_Catalog_Purchases, -- Total number of purchases made using a catalog
-  SUM(NumStorePurchases) AS Total_Store_Purchases, -- Total number of purchases made directly in stores
-  SUM(AcceptedCmp3) AS Total_AcceptedCmp3, -- Total number of customers who accepted the offer in the 3rd campaign
-  SUM(AcceptedCmp4) AS Total_AcceptedCmp4, -- Total number of customers who accepted the offer in the 4th campaign
-  SUM(AcceptedCmp5) AS Total_AcceptedCmp5, -- Total number of customers who accepted the offer in the 5th campaign
-  SUM(AcceptedCmp1) AS Total_AcceptedCmp1, -- Total number of customers who accepted the offer in the 1st campaign
-  SUM(AcceptedCmp2) AS Total_AcceptedCmp2, -- Total number of customers who accepted the offer in the 2nd campaign
-  SUM(Response) AS Total_Response, -- Total number of customers who responded to the last campaign
-  SUM(Complain) AS Total_Complain -- Total number of customers who complained in the last 2 years
-FROM
-  `vibrant-outpost-381409.Markettig_data.marketting`
-WHERE
-  _income_ IS NOT NULL -- Exclude rows with null incomes
-GROUP BY
-  Marital_Status, Income_Group
-ORDER BY
-  MIN(_income_);
+    *,
+    CONCAT(
+      '$',
+      FLOOR((_Income_ - 1) / 20000) * 20000 + 1,
+      ' - $',
+      FLOOR((_Income_ - 1) / 20000) * 20000 + 20000
+    ) AS Income_Group
+  FROM `vibrant-outpost-381409.Markettig_data.marketting`
+  WHERE _Income_ IS NOT NULL
+)
 
-  ---Now Combining Age_group, Income_Group , Marital_Status, Country   to find their relationship with income,  products, purchases , campaign, responses and complains to Answer the question How does customer demographic information e.g Age, Income and Marital status correlate with their spending , purchasing , acceptance offer, Response and Complains.
+SELECT
+  Marital_Status,
+  Income_Group,
+  SUM(MntWines) AS total_mnt_wines,
+  SUM(MntFruits) AS total_mnt_fruits,
+  SUM(MntMeatProducts) AS total_mnt_meat_products,
+  SUM(MntFishProducts) AS total_mnt_fish_products,
+  SUM(MntSweetProducts) AS total_mnt_sweet_products,
+  SUM(MntGoldProds) AS total_mnt_gold_prods,
+  SUM(NumDealsPurchases) AS total_deals_purchases,
+  SUM(NumWebPurchases) AS total_web_purchases,
+  SUM(NumCatalogPurchases) AS total_catalog_purchases,
+  SUM(NumStorePurchases) AS total_store_purchases,
+  SUM(Response) AS total_response,
+  SUM(Complain) AS total_complain
+FROM customer_base
+GROUP BY Marital_Status, Income_Group
+ORDER BY Marital_Status, Income_Group;
 
+
+-- =========================================================
+-- 9. DEMOGRAPHIC SEGMENT ANALYSIS
+-- =========================================================
+
+WITH customer_base AS (
   SELECT
-  CONCAT(FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10, '-', FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10 + 9) AS Age_Group, -- Age Group range
-  CONCAT('$', FLOOR((_income_ - 1) / 20000) * 20000 + 1, ' - $', FLOOR((_income_ - 1) / 20000) * 20000 + 20000) AS Income_Group, -- Income Group range
-  Marital_Status, -- Marital Status
+    *,
+    CONCAT(
+      FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10,
+      '-',
+      FLOOR((EXTRACT(YEAR FROM CURRENT_DATE()) - Year_Birth) / 10) * 10 + 9
+    ) AS Age_Group,
+    CONCAT(
+      '$',
+      FLOOR((_Income_ - 1) / 20000) * 20000 + 1,
+      ' - $',
+      FLOOR((_Income_ - 1) / 20000) * 20000 + 20000
+    ) AS Income_Group
+  FROM `vibrant-outpost-381409.Markettig_data.marketting`
+)
+
+SELECT
+  Age_Group,
+  Income_Group,
+  Marital_Status,
   Country,
-  SUM(_income_) AS Total_Income, --Total amount of income per group
-  SUM(MntWines) AS Total_MntWines, -- Total amount spent on wines
-  SUM(MntFruits) AS Total_MntFruits, -- Total amount spent on fruits
-  SUM(MntMeatProducts) AS Total_MntMeatProducts, -- Total amount spent on meat products
-  SUM(MntFishProducts) AS Total_MntFishProducts, -- Total amount spent on fish products
-  SUM(MntSweetProducts) AS Total_MntSweetProducts, -- Total amount spent on sweets
-  SUM(MntGoldProds) AS Total_MntGoldProds, -- Total amount spent on gold products
-  SUM(NumDealsPurchases) AS Total_Deals_Purchases, -- Total number of purchases made with a discount
-  SUM(NumWebPurchases) AS Total_Web_Purchases, -- Total number of purchases made through the website
-  SUM(NumCatalogPurchases) AS Total_Catalog_Purchases, -- Total number of purchases made using a catalog
-  SUM(NumStorePurchases) AS Total_Store_Purchases, -- Total number of purchases made directly in stores
-  SUM(AcceptedCmp3) AS Total_AcceptedCmp3, -- Total number of customers who accepted the offer in the 3rd campaign
-  SUM(AcceptedCmp4) AS Total_AcceptedCmp4, -- Total number of customers who accepted the offer in the 4th campaign
-  SUM(AcceptedCmp5) AS Total_AcceptedCmp5, -- Total number of customers who accepted the offer in the 5th campaign
-  SUM(AcceptedCmp1) AS Total_AcceptedCmp1, -- Total number of customers who accepted the offer in the 1st campaign
-  SUM(AcceptedCmp2) AS Total_AcceptedCmp2, -- Total number of customers who accepted the offer in the 2nd campaign
-  SUM(Response) AS Total_Response, -- Total number of customers who responded to the last campaign
-  SUM(Complain) AS Total_Complain -- Total number of customers who complained in the last 2 years
-FROM
-  `vibrant-outpost-381409.Markettig_data.marketting`
-
-GROUP BY
-  Age_Group, Income_Group, Marital_Status, Country
-ORDER BY
-  MIN(_income_), Age_Group;
-
-
-
+  SUM(_Income_) AS total_income,
+  SUM(MntWines) AS total_mnt_wines,
+  SUM(MntFruits) AS total_mnt_fruits,
+  SUM(MntMeatProducts) AS total_mnt_meat_products,
+  SUM(MntFishProducts) AS total_mnt_fish_products,
+  SUM(MntSweetProducts) AS total_mnt_sweet_products,
+  SUM(MntGoldProds) AS total_mnt_gold_prods,
+  SUM(NumDealsPurchases) AS total_deals_purchases,
+  SUM(NumWebPurchases) AS total_web_purchases,
+  SUM(NumCatalogPurchases) AS total_catalog_purchases,
+  SUM(NumStorePurchases) AS total_store_purchases,
+  SUM(AcceptedCmp1) AS total_accepted_cmp1,
+  SUM(AcceptedCmp2) AS total_accepted_cmp2,
+  SUM(AcceptedCmp3) AS total_accepted_cmp3,
+  SUM(AcceptedCmp4) AS total_accepted_cmp4,
+  SUM(AcceptedCmp5) AS total_accepted_cmp5,
+  SUM(Response) AS total_response,
+  SUM(Complain) AS total_complain
+FROM customer_base
+GROUP BY Age_Group, Income_Group, Marital_Status, Country
+ORDER BY Age_Group, Income_Group, Marital_Status, Country;
