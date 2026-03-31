@@ -3,10 +3,7 @@ Project: Marketing Customer Segmentation Analysis
 Author: Abdikhani
 Tool: Google BigQuery
 Dataset: marketing
-Goal:
-Analyze customer demographics, income, spending behavior,
-purchase patterns, and campaign response to uncover
-actionable business insights.
+Goal: Analyze customer demographics, income, spending behavior, purchase patterns, and campaign response to uncover actionable business insights.
 */
 
 -- =========================================================
