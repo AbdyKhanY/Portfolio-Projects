@@ -55,7 +55,7 @@ A gym staff member scans the member’s QR code using a smartphone.
 
 ### 3. Real-Time Membership Validation (Active)
 
-![Active](screenshots/active-member.png)
+![Active](screenshots/active-member.PNG)
 
 The system checks:
 
