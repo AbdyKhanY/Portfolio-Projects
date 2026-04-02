@@ -68,7 +68,7 @@ If valid → ✅ **Access Granted**
 
 ### 4. Expired Membership Detection
 
-![Expired](screenshots/expired-member.png)
+![Expired](screenshots/expired-member.PNG)
 
 If the membership is expired:
 
@@ -81,7 +81,7 @@ If the membership is expired:
 
 ### 5. Duplicate Check-In Detection (Fraud Prevention)
 
-![Duplicate](screenshots/duplicate-entry.png)
+![Duplicate](screenshots/duplicate-entry.PNG)
 
 The system automatically detects:
 
