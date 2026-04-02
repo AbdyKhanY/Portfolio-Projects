@@ -156,6 +156,6 @@ Data Analyst / Data Engineer Associate
 
 ## 📬 Contact
 
-(Add your LinkedIn or email here)
+(https://www.linkedin.com/in/abdulleabdigani/)
 
 ---
