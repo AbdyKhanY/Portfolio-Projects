@@ -69,14 +69,6 @@ A structured tracking system was developed using Google Sheets with:
 
 ---
 
-### 🔄 Workflow Status Tracking
-
-![Workflow](images/workflow.png)
-
-*Example showing status progression: Pending → Approved → Closed.*
-
----
-
 ## 🧩 System Components
 
 ### 📄 Data Sheet
