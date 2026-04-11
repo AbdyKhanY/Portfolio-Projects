@@ -55,7 +55,7 @@ A structured tracking system was developed using Google Sheets with:
 
 ### 📊 Dashboard / Report Sheet
 
-![Dashboard](WORK-ORDER TRACKER/Screenshots/Dashboard.PNG)
+![Dashboard](https://github.com/AbdyKhanY/Portfolio-Projects/blob/36ad72df86c5c7455b83c798555bde40838d5f93/WORK-ORDER%20TRACKER/Screenshots/Dashboard.PNG)
 
 *Live dashboard showing work order status distribution and reporting insights.*
 
