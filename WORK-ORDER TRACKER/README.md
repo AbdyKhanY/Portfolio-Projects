@@ -63,7 +63,7 @@ A structured tracking system was developed using Google Sheets with:
 
 ### 📄 Data Entry Sheet
 
-![Data Sheet](images/data-sheet.png)
+![Data Sheet](https://github.com/AbdyKhanY/Portfolio-Projects/blob/afc83b5ab5f18ace48140c15f9f9c4e7739da3dc/WORK-ORDER%20TRACKER/DATA.PNG)
 
 *Structured sheet used for entering and updating work orders.*
 
