@@ -1,7 +1,3 @@
-Got it — clean **README text version (no markdown images, just text placeholders)** 👇
-
----
-
 ## 📊 Business Insights & Analysis
 
 The processed stock dataset was analyzed using SQL queries in Amazon Athena to extract meaningful financial insights and support data-driven decision-making.
@@ -34,9 +30,14 @@ The processed stock dataset was analyzed using SQL queries in Amazon Athena to e
 
 ### 📸 Evidence (Athena Query Outputs)
 
-* Screenshot 1: Top percentage return days (used to identify momentum trends)
-* Screenshot 2: High volatility days (used to analyze risk spikes)
-* Screenshot 3: Summary statistics including min, max, and average price
+* Top percentage return days:
+  `images/top_returns.png`
+
+* High volatility days:
+  `images/volatility.png`
+
+* Summary statistics (min, max, avg):
+  `images/summary_stats.png`
 
 ---
 
@@ -56,8 +57,4 @@ The processed stock dataset was analyzed using SQL queries in Amazon Athena to e
 * AWS S3 for data storage
 * AWS Lambda for ETL processing
 
----
 
-If you want next:
-👉 I’ll convert your whole project into a **full GitHub README (top to bottom, recruiter-ready)**
-👉 or write a **CV bullet that sounds like real work experience**
