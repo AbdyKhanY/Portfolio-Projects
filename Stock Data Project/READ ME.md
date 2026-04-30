@@ -167,8 +167,3 @@ stock-etl-project/
 * Expand to multi-stock portfolio analysis
 
 ---
-
-
-👉 write your **CV bullet points (interview-ready)**
-👉 or polish your **GitHub repo title + description (SEO optimized)**
-👉 or help you build **project #2 (even stronger than this one)**
