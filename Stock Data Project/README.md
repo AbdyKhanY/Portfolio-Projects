@@ -141,12 +141,7 @@ The following screenshots are included in the repository:
 stock-etl-project/
 │
 ├── lambda_function.py
-├── sql/
-│   ├── 01_create_table.sql
-│   ├── 02_daily_trend.sql
-│   ├── 03_average_price.sql
-│   ├── 04_volatility.sql
-│   ├── 05_top_returns.sql
+├── SQL/README.MD
 │
 ├── images/
 │   ├── top_returns.png
@@ -176,9 +171,3 @@ stock-etl-project/
 * Expand to multi-stock portfolio analytics
 
 ---
-
-If you want next step, I can:
-
-👉 write your **GitHub repo title + description (SEO optimized for recruiters)**
-👉 or create your **CV bullet (this project → job interview level)**
-👉 or prepare your **interview explanation script (how to present this in 2 minutes)**
