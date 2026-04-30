@@ -2,35 +2,34 @@
 
 ## 📌 Project Overview
 
-This project demonstrates a **serverless data engineering pipeline** built on AWS to ingest, process, and analyze stock market data using a public API.
+This project demonstrates a **serverless data engineering pipeline on AWS** that ingests, processes, and analyzes stock market data from a public API.
 
-The system automates the full ETL workflow:
+The pipeline automates the full ETL workflow:
 
-**Stock API → AWS Lambda → Amazon S3 → AWS Glue/Athena → SQL Analytics**
+**Stock API → AWS Lambda → Amazon S3 → AWS Athena → SQL Analytics**
 
-It transforms raw financial data into structured Parquet format and enables business insights using SQL-based analytics.
+It transforms raw financial data into structured Parquet format and enables business intelligence through SQL-based analysis.
 
 ---
 
 ## 🎯 Objective
 
-To build a scalable, cloud-based ETL pipeline that:
+To design and implement a scalable cloud-based ETL pipeline that:
 
-* Automatically ingests stock market data from an API
+* Automatically ingests stock market data from a public API
 * Cleans and transforms raw JSON data into structured format
-* Stores optimized Parquet files in S3
-* Enables analytical queries using Amazon Athena
-* Extracts business insights for decision-making
+* Stores optimized Parquet files in Amazon S3
+* Enables analytical querying using Amazon Athena
+* Extracts actionable business insights from financial data
 
 ---
 
 ## 🏗️ Architecture
 
 1. Stock Market API (Alpha Vantage)
-2. AWS Lambda (Data ingestion + transformation)
-3. Amazon S3 (Raw + processed storage)
-4. AWS Glue (Data cataloging - optional)
-5. Amazon Athena (SQL analytics)
+2. AWS Lambda (Serverless data ingestion & transformation)
+3. Amazon S3 (Raw and processed data storage)
+4. Amazon Athena (SQL-based analytics engine)
 
 ---
 
@@ -38,13 +37,13 @@ To build a scalable, cloud-based ETL pipeline that:
 
 ### 1. Data Ingestion
 
-* Stock data is fetched from Alpha Vantage API
-* Lambda function triggers API call automatically
+* Stock data is retrieved from the Alpha Vantage API
+* AWS Lambda is triggered to fetch data automatically
 
 ### 2. Data Processing
 
 * JSON response is parsed into structured format
-* Data cleaning includes:
+* Data is cleaned using:
 
   * Null handling
   * Deduplication
@@ -53,13 +52,13 @@ To build a scalable, cloud-based ETL pipeline that:
 
 ### 3. Data Storage
 
-* Cleaned data is converted into **Parquet format**
-* Stored in Amazon S3 for optimized querying
+* Cleaned dataset is converted into **Parquet format**
+* Stored in Amazon S3 for optimized query performance
 
 ### 4. Data Analysis
 
-* Amazon Athena is used to run SQL queries
-* Data is analyzed for trends, volatility, and performance
+* Amazon Athena is used for SQL-based analytics
+* Data is analyzed for trends, returns, volatility, and trading behavior
 
 ---
 
@@ -71,17 +70,30 @@ The processed stock dataset was analyzed using SQL queries in Amazon Athena to e
 
 ### 🔹 Key Insights
 
-* The stock maintained an average closing price of approximately **$264**, indicating a relatively stable trading range.
+* The stock maintained an average closing price of approximately **$264**, indicating a stable trading range.
 
-* The highest recorded price was **$288.62 (Dec 3, 2025)**, while the lowest was **$243.42 (Jan 20, 2026)**.
+* The price fluctuated between **$246.63 and $284.15**, showing a moderate range-bound market structure.
 
-* The average daily volatility was approximately **5.24**, with a peak of **15.54 (Feb 12, 2026)**, indicating periods of increased risk.
+* The average daily volatility was **~5.24**, with a maximum spike of **15.54 (Feb 12, 2026)**, indicating occasional high-risk events.
 
-* Volatility spikes were concentrated between **January and February 2026**, showing unstable trading conditions.
+* Volatility spikes were concentrated between **January and February 2026**, suggesting short-lived instability rather than sustained risk.
 
-* The highest daily return was **+4.06% (Feb 2, 2026)**, with multiple strong gains in late January–February.
+* The highest daily return was **+4.06% (Feb 2, 2026)**, with strong gains clustered in late January to mid-February, indicating momentum-based behavior.
 
-* The stock recorded an average trading volume of **~45 million shares**, indicating strong liquidity.
+* The stock recorded an average trading volume of **~45 million shares**, confirming strong liquidity and efficient market participation.
+
+---
+
+## 📈 Business Recommendations (Data-Driven)
+
+* **Range-Based Trading Strategy:**
+  The stock consistently traded within a defined range of **$246.63 to $284.15 (~14% spread)**, making mean-reversion strategies more suitable than long-term trend-following approaches.
+
+* **Momentum Window Strategy:**
+  Returns are not evenly distributed. The highest gains occurred in a concentrated period (late Jan – mid Feb), with a peak return of **+4.06%**, indicating that profitable opportunities exist in **short momentum clusters rather than random intervals**.
+
+* **Risk-Controlled Volatility Strategy:**
+  Although average volatility remained moderate (**~5.24**), sharp spikes up to **15.54** were observed. These are **event-driven risk periods**, suggesting traders should avoid entries during volatility spikes and instead focus on stable pre-spike conditions.
 
 ---
 
@@ -100,15 +112,6 @@ The following screenshots are included in the repository:
   ![summary_stats](Images/summary_stats.PNG)
 
 
----
-
-## 📈 Business Recommendations
-
-* Use the average price (~$264) as a benchmark for trading decisions
-* Avoid trading during extreme volatility spikes unless risk-tolerant
-* Focus on momentum periods (late Jan – Feb) for short-term opportunities
-* Combine returns and volatility metrics for better decision-making
-* Use high volume periods for efficient trade execution
 
 ---
 
@@ -116,7 +119,6 @@ The following screenshots are included in the repository:
 
 * AWS Lambda (Serverless compute)
 * Amazon S3 (Data Lake storage)
-* AWS Glue (Data catalog - optional)
 * Amazon Athena (SQL analytics engine)
 * Python (Data processing)
 * Alpha Vantage API (Stock data source)
@@ -125,45 +127,58 @@ The following screenshots are included in the repository:
 
 ## 🚀 Key Features
 
-* Fully serverless architecture
-* Automated ETL pipeline
-* Real-time stock data ingestion
+* Fully serverless cloud ETL pipeline
+* Automated stock data ingestion
 * Optimized Parquet storage for analytics
 * SQL-based business intelligence layer
+* Scalable data engineering architecture
 
 ---
 
 ## 📁 Project Structure
 
-```
+```text
 stock-etl-project/
 │
 ├── lambda_function.py
 ├── sql/
-├── README.md
+│   ├── 01_create_table.sql
+│   ├── 02_daily_trend.sql
+│   ├── 03_average_price.sql
+│   ├── 04_volatility.sql
+│   ├── 05_top_returns.sql
+│
 ├── images/
 │   ├── top_returns.png
 │   ├── volatility.png
 │   ├── summary_stats.png
+│
+└── README.md
 ```
 
 ---
 
 ## 📌 What This Project Demonstrates
 
-* Cloud ETL pipeline design
-* Serverless architecture (AWS Lambda)
-* Data engineering fundamentals
-* SQL analytics using Athena
-* Business intelligence from raw data
+* End-to-end cloud data engineering pipeline design
+* Serverless architecture using AWS services
+* Real-world ETL development (not just tutorial-level)
+* SQL-based financial analytics
+* Business intelligence extraction from raw data
 
 ---
 
 ## 💡 Future Improvements
 
-* Add real-time streaming (Kinesis)
-* Automate scheduling with EventBridge
-* Add dashboard (QuickSight / Power BI)
-* Expand to multi-stock portfolio analysis
+* Add real-time streaming ingestion using AWS Kinesis
+* Automate pipeline scheduling with EventBridge
+* Add dashboard visualization using QuickSight or Power BI
+* Expand to multi-stock portfolio analytics
 
 ---
+
+If you want next step, I can:
+
+👉 write your **GitHub repo title + description (SEO optimized for recruiters)**
+👉 or create your **CV bullet (this project → job interview level)**
+👉 or prepare your **interview explanation script (how to present this in 2 minutes)**
