@@ -37,7 +37,7 @@ The processed stock dataset was analyzed using SQL queries in Amazon Athena to e
   `images/volatility.png`
 
 * Summary statistics (min, max, avg):
-  `images/summary_stats.png`
+  `Stock Data Project/Images/summary_stats.PNG`
 
 ---
 
