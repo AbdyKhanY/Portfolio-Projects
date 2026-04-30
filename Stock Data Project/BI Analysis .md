@@ -31,7 +31,7 @@ The processed stock dataset was analyzed using SQL queries in Amazon Athena to e
 ### 📸 Evidence (Athena Query Outputs)
 
 * Top percentage return days:
-  `images/top_returns.png`
+  ![top_returns](images/top_returns.png)
 
 * High volatility days:
   `images/volatility.png`
