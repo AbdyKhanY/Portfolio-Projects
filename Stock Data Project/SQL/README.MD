@@ -179,7 +179,3 @@ ORDER BY volume DESC;
 * All queries are executed in Amazon Athena
 * Data is stored in Parquet format in Amazon S3
 * Window functions are used for trend and return analysis
-
-
-👉 turn this into a **GitHub “SQL folder structure + documentation style”**
-👉 or improve it into a **professional data engineering portfolio project format**
