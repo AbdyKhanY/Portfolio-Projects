@@ -168,13 +168,6 @@ stock-etl-project/
 
 ---
 
-## 🏁 Conclusion
-
-This project demonstrates a complete **end-to-end cloud data pipeline**, transforming raw stock API data into actionable business insights using AWS serverless services.
-
----
-
-If you want next, I can help you:
 
 👉 write your **CV bullet points (interview-ready)**
 👉 or polish your **GitHub repo title + description (SEO optimized)**
