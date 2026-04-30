@@ -1,7 +1,3 @@
-Here’s your **FULL MAIN README (copy-paste ready, portfolio quality)** 👇
-
----
-
 # 📊 Serverless Stock Data ETL Pipeline on AWS
 
 ## 📌 Project Overview
@@ -93,9 +89,16 @@ The processed stock dataset was analyzed using SQL queries in Amazon Athena to e
 
 The following screenshots are included in the repository:
 
-* `images/top_returns.png` → Highest percentage return days (momentum analysis)
-* `images/volatility.png` → High volatility days (risk analysis)
-* `images/summary_stats.png` → Min, max, and average price summary
+* Top percentage return days:
+  ![top_returns](Images/top_returns.PNG)
+
+* High volatility days:
+  ![volatility](Images/volatility.PNG)
+
+* Summary statistics (min, max, avg):
+  
+  ![summary_stats](Images/summary_stats.PNG)
+
 
 ---
 
@@ -136,6 +139,7 @@ The following screenshots are included in the repository:
 stock-etl-project/
 │
 ├── lambda_function.py
+├── sql/
 ├── README.md
 ├── images/
 │   ├── top_returns.png
