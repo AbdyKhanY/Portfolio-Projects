@@ -144,23 +144,84 @@ After analyzing the data, several valuable business insights were identified:
 
 ---
 
-# 📂 Data Model
+# 🗄️ Data Model
 
-The dashboard follows a **Star Schema** data model for improved performance and scalability.
+The dashboard is built using a **multi-fact Star Schema**, a best practice in dimensional modeling for Business Intelligence. The model separates transactional data into fact tables and descriptive information into dimension tables, ensuring high performance, scalability, and efficient DAX calculations.
 
-Example:
+## Fact Tables
+
+| Table | Description |
+|--------|-------------|
+| **Fact_Sales** | Stores sales transactions, revenue, profit, and order-related metrics. |
+| **Fact_Production** | Contains production quantities, manufacturing output, and production performance metrics. |
+| **Fact_Shipment** | Tracks shipment details, delivery status, carriers, and logistics performance. |
+| **Fact_Procurement** | Records procurement activities, purchase orders, supplier transactions, and procurement costs. |
+| **Fact_Inventory** | Stores inventory quantities, stock levels, inventory value, and warehouse information. |
+
+---
+
+## Dimension Tables
+
+| Table | Description |
+|--------|-------------|
+| **Dim_Product** | Product details including product names, categories, and specifications. |
+| **Dim_Supplier** | Supplier information such as supplier names, locations, and performance attributes. |
+| **Dim_Customer** | Customer information used for customer-level analysis. |
+| **Dim_Facility** | Manufacturing plants, warehouses, and distribution centers. |
+| **Dim_Date** | Calendar table supporting time intelligence, trend analysis, and period comparisons. |
+
+---
+
+## Data Model Architecture
 
 ```
-               Supplier
-                   |
-                   |
-Customer ---- Fact Table ---- Shipment
-                   |
-                   |
-             Inventory
+                            ┌──────────────┐
+                            │  Dim_Date    │
+                            └──────┬───────┘
+                                   │
+      ┌──────────────┬─────────────┼─────────────┬──────────────┐
+      │              │             │             │              │
+      ▼              ▼             ▼             ▼              ▼
+┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐
+│ Fact Sales │ │Fact Product│ │Fact Shipment││Fact Inventory││Fact Procure│
+└─────┬──────┘ └─────┬──────┘ └─────┬──────┘ └─────┬──────┘ └─────┬──────┘
+      │              │              │              │              │
+      ├──────────────┼──────────────┼──────────────┼──────────────┤
+      │              │              │              │              │
+      ▼              ▼              ▼              ▼              ▼
+┌──────────┐  ┌──────────┐  ┌──────────┐
+│DimProduct│  │DimSupplier│ │DimFacility│
+└─────┬────┘  └─────┬─────┘ └─────┬─────┘
+      │             │             │
+      └─────────────┼─────────────┘
+                    │
+                    ▼
+             ┌────────────┐
+             │DimCustomer │
+             └────────────┘
 ```
 
-The model separates fact and dimension tables to improve query performance and simplify report development.
+> **Model Type:** Multi-Fact Star Schema  
+> **Total Fact Tables:** 5  
+> **Total Dimension Tables:** 5  
+> **Total Tables:** 10
+
+---
+
+## Modeling Best Practices
+
+This project follows industry-standard Power BI modeling practices:
+
+- ⭐ Star Schema Design
+- ⭐ One-to-Many Relationships
+- ⭐ Single Direction Cross Filtering
+- ⭐ Dedicated Date Dimension for Time Intelligence
+- ⭐ Normalized Dimension Tables
+- ⭐ Fact Tables Optimized for Analytical Queries
+- ⭐ Reusable DAX Measures
+- ⭐ Optimized Model Performance
+
+The model was designed to minimize redundancy, improve report performance, and support scalable business analytics across procurement, production, inventory, shipments, customers, and sales.
 
 ---
 
