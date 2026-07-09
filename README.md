@@ -27,7 +27,7 @@ Organizations often manage supply chain data across multiple systems, making it 
 - Which suppliers have the longest lead times?
 - Which products hold the highest inventory value?
 - Which shipping carriers experience the most delays?
-- Which customers generate the highest profit?
+- Which customers generate the highest revenue?
 - How is the business performing overall?
 
 Without a centralized reporting solution, decision-making becomes slow and reactive.
