@@ -44,7 +44,7 @@ The dashboard enables users to:
 - Evaluate supplier performance
 - Track inventory levels
 - Analyze shipment delays
-- Identify profitable customers
+- Identify customers with highest revenues
 - Improve operational efficiency
 
 ---
