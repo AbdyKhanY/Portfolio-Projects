@@ -408,13 +408,13 @@ Future versions of this project may include:
 
 ## Abdikhan Mohamed
 
-📧 Email: your.email@example.com
+📧 Email: Abdykhan.edu@gmail.com
 
-💼 LinkedIn: https://linkedin.com/in/your-linkedin
+💼 LinkedIn: https://www.linkedin.com/in/abdulleabdigani/
 
-🌐 Portfolio: https://yourportfolio.com
+🌐 Portfolio: https://khanalyst.netlify.app/
 
-🐙 GitHub: https://github.com/yourusername
+🐙 GitHub: https://github.com/AbdyKhanY/Portfolio-Projects
 
 ---
 
