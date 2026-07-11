@@ -362,7 +362,7 @@ Future versions of this project may include:
 
 ## Supplier Performance
 
-![Supplier Analysis](Images/supplier_analysis.png)
+![Supplier Analysis](Images/supplier_analysis.PNG)
 
 ---
 
