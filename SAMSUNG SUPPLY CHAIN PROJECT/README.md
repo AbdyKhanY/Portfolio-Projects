@@ -16,7 +16,7 @@ The dashboard provides a centralized view of the entire supply chain, enabling s
 
 ## Executive Dashboard
 
-![(SAMSUNG SUPPLY CHAIN PROJECT/Images/Samsung Dashboard.PNG)]
+![SAMSUNG SUPPLY CHAIN PROJECT/Images/Samsung Dashboard.PNG]
 
 ---
 
