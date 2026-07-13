@@ -368,7 +368,7 @@ Future versions of this project may include:
 
 ## Inventory Analysis
 
-![Inventory Analysis](Images/inventory-analysis.png)
+![Inventory Analysis](Images/inventory_analysis.PNG)
 
 ---
 
