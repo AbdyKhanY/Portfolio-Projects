@@ -374,7 +374,7 @@ Future versions of this project may include:
 
 ## Shipment Analysis
 
-![Shipment Analysis](Images/shipment_analysis.PNG)
+![Shipment Analysis](Images/Shipment_Analysis.PNG)
 
 ---
 
