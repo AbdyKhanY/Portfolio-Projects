@@ -380,7 +380,7 @@ Future versions of this project may include:
 
 ## Customer Analysis
 
-![Customer Analysis](Images/customer-analysis.png)
+![Customer Analysis](Images/Customer_Analysis.PNG)
 
 ---
 
