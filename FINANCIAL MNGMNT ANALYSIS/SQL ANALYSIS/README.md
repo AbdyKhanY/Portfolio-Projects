@@ -117,7 +117,7 @@ SELECT DISTINCT department FROM financial_management;
 ```
 **Result:** All categorical fields (`financial_status`, `region`, `department`) contain clean, consistent values — no typos, casing issues, or unexpected categories.
 
-📸 ![Financial Status](images/finanial_status.PNG)  ![Region](images/region.PNG)
+📸 ![Financial Status](images/finanial_status.PNG)  ![Region](images/region.PNG)   ![Department](images/department.PNG)
 
 
 ---
