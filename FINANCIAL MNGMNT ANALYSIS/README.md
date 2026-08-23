@@ -23,7 +23,7 @@ Analysis of 8,900 financial transactions across 5 regions and 6 departments reve
 ![Risk & Compliance Analysis](images/risk_analysis.PNG).
 
 ### Page 3: Operational Analysis / IoT Metrics
-📸 **[Insert screenshot: Page 3 — Operational/IoT]**
+![Operational Analsis / IoT Metrics](images/operational_analysis.PNG)
 
 ---
 
