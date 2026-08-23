@@ -55,8 +55,6 @@ CREATE TABLE financial_management (
 );
 ```
 
-📸 **[Insert screenshot: table created successfully / \d financial_management output]**
-
 **Note:** `credit_risk_level` was initially typed as `TEXT` but corrected to `NUMERIC` after inspecting sample values (e.g. 0.366, 0.231, 0.163) which were clearly continuous risk scores, not categorical labels.
 
 ```sql
