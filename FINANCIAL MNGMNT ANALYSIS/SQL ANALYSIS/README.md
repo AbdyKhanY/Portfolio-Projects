@@ -162,7 +162,7 @@ SELECT COUNT(*) FROM financial_management WHERE net_profit > revenue;
 ### Investigation
 Sample rows were pulled to inspect the relationship between `revenue`, `operating_cost`, and `net_profit`:
 
-📸 **[Insert screenshot: sample rows where net_profit > revenue]**
+📸 ![Profit > Revenue](images/profit_revenue.PNG)
 
 | transaction_id | revenue | operating_cost | net_profit |
 |---|---|---|---|
