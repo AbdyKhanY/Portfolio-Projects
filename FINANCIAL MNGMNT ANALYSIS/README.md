@@ -111,5 +111,4 @@ RETURN __CORR
 
 ---
 
-## 9. Status
-All 3 dashboard pages complete (Financial Performance, Risk & Compliance, Operational/IoT Metrics). Dashboard connects live to Neon PostgreSQL. Ready for portfolio presentation and stakeholder review.
+
