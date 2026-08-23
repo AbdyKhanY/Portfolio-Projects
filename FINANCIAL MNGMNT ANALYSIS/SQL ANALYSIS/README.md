@@ -181,7 +181,7 @@ WHERE net_profit > revenue;
 ```
 **Result:** Gaps range from 61.62 to 239,950.56 (avg ≈ 81,373). The scale of inconsistency (e.g. operating cost 8x revenue while net profit is still positive) confirms this isn't rounding error — it's structural.
 
-📸 **[Insert screenshot: gap analysis results]**
+📸 ![Profit > Revenue](images/gap.PNG)
 
 ### Conclusion
 `revenue`, `operating_cost`, and `net_profit` (and likely `gross_margin`, `roi`, `ebitda`) are **independently generated synthetic values**, not values derived from real accounting formulas. This is expected behavior for this dataset and **not a data quality error**.
