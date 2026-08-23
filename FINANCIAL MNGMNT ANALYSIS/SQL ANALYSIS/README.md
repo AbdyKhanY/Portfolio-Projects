@@ -146,7 +146,7 @@ FROM financial_management;
 
 **Result:** All ranges fall within plausible real-world bounds. No impossible or corrupted values (e.g. negative percentages, uptime over 100%).
 
-📸 **[Insert screenshot: MIN/MAX query results]**
+📸 ![Min Max](images/min_max.PNG)
 
 *Outlier detection (IQR/percentile analysis) deferred intentionally to the visualization stage (Power BI/Tableau boxplots) and potential later ML stage, where distribution shape is easier to interpret visually.*
 
