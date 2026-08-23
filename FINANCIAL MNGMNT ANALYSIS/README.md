@@ -20,7 +20,7 @@ Analysis of 8,900 financial transactions across 5 regions and 6 departments reve
  ![Financial Performance Analysis](images/financial_performance_analysis.PNG)
 
 ### Page 2: Risk & Compliance Analysis
-📸 **[Insert screenshot: Page 2 — Risk & Compliance]**
+![Risk & Compliance Analysis].(/images/risk_analysis.PNG).
 
 ### Page 3: Operational Analysis / IoT Metrics
 📸 **[Insert screenshot: Page 3 — Operational/IoT]**
