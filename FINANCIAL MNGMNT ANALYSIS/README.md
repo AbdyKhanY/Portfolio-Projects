@@ -17,7 +17,7 @@ Analysis of 8,900 financial transactions across 5 regions and 6 departments reve
 ## 3. Dashboard Pages — Screenshots
 
 ### Page 1: Financial Performance Analysis
-📸 **[https://github.com/AbdyKhanY/Portfolio-Projects/blob/31a5e70e12e08bbe2f77a8b75aa67e24068f84f0/FINANCIAL%20MNGMNT%20ANALYSIS/images/financial_performance_analysis.PNG]**
+📸 ![FINANCIAL MNGMNT ANALYSIS/images/financial_performance_analysis.PNG]
 
 ### Page 2: Risk & Compliance Analysis
 📸 **[Insert screenshot: Page 2 — Risk & Compliance]**
