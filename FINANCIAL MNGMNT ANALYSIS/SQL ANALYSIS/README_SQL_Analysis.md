@@ -89,7 +89,7 @@ ALTER TABLE financial_management ADD PRIMARY KEY (transaction_id);
 ```
 **Result:** Constraint applied successfully — confirms `transaction_id` is a valid unique row identifier.
 
-📸 **[Insert screenshot: information_schema.columns output confirming PK + data types]**
+📸 ![Schema](images/schema.PNG)
 
 ---
 
